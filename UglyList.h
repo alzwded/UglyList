@@ -130,19 +130,20 @@ public:
 public:
 
     List()
-        : root(NULL)
+        : root(new ListNode<T>(NULL))
         , cache(NULL)
         , cacheI(0)
     {
-        root.next = &root;
-        root.prev = &root;
+        root->next = root;
+        root->prev = root;
     }
 
     ~List()
     {
         while(!empty()) {
-            remove(root.next);
+            remove(root->next);
         }
+        delete root;
     }
 
     void insert(ListNode<T>* node, ListNode<T>* prev, ListNode<T>* next) {
@@ -153,11 +154,11 @@ public:
     }
 
     void push_front(ListNode<T>* node) {
-        insert(node, &root, root.next);
+        insert(node, root, root->next);
     }
 
     void push_back(ListNode<T>* node) {
-        insert(node, root.prev, &root);
+        insert(node, root->prev, root);
     }
 
     void pop_front() {
@@ -190,7 +191,7 @@ public:
     }
 
     bool empty() {
-        return root.next == &root;
+        return root->next == root;
     }
 
     void remove(ListNode<T>* node) {
@@ -202,19 +203,19 @@ public:
     }
 
     iterator begin() {
-        return iterator(root.next);
+        return iterator(root->next);
     }
 
     iterator end() {
-        return iterator(&root);
+        return iterator(root);
     }
 
     iterator rbegin() {
-        return iterator(root.prev, true);
+        return iterator(root->prev, true);
     }
 
     iterator rend() {
-        return iterator(&root, true);
+        return iterator(root, true);
     }
 
     void erase(iterator i) {
@@ -222,7 +223,7 @@ public:
     }
 
 private:
-    ListNode<T> root;
+    ListNode<T>* root;
     iterator cache;
     int cacheI;
 

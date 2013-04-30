@@ -51,7 +51,7 @@ int main() {
     list.push_back(&(new Element())->link);
 
     for(UglyList::List<Element>::iterator i = list.begin(); i != list.end(); ++i) {
-        printf(": %d\n", (**i)->X());
+        printf(". %d\n", (**i)->X());
     }
 
     printf("print elements using index operator\n");
