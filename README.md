@@ -15,3 +15,4 @@ TODO
 * emplace()
 * sort(functor)
 * remove_if
+* make list passable by value
