@@ -14,3 +14,4 @@ TODO
 * clear()
 * emplace()
 * sort(functor)
+* remove_if
