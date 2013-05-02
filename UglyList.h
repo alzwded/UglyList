@@ -27,6 +27,10 @@ public:
     {}
 
     void remove() {
+        if(this->next) this->next->prev = this->prev;
+        if(this->prev) this->prev->next = this->next;
+        this->next = NULL;
+        this->prev = NULL;
         delete _ptr;
     }
 };
@@ -203,10 +207,6 @@ public:
     }
 
     void remove(ListNode<T>* node) {
-        node->next->prev = node->prev;
-        node->prev->next = node->next;
-        node->next = NULL;
-        node->prev = NULL;
         node->remove();
     }
 
