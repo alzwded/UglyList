@@ -11,8 +11,8 @@ TODO
 * [x] splice(iterator, otherList, iterator, iterator) method to transfer an element to another list
 * [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
-* [ ] add find(), rfind()
-* [ ] find(functor)
+* [x] add find(), rfind()
+* [ ] find_first_matching(functor)
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
