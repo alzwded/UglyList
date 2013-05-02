@@ -9,8 +9,13 @@ clean:
 
 .PHONY: clean
 
-test: a.out
+test.log: a.out
 	./a.out > test.log
+
+test: test.log a.out
+
+vtest: test
 	less test.log
 
 .PHONY: test
+.PHONY: vtest
