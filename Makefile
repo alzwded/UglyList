@@ -11,5 +11,6 @@ clean:
 
 test: a.out
 	./a.out > test.log
+	less test.log
 
 .PHONY: test

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <queue>
 
+#define FORMAT ". %-16s -%c-\n"
+
 /*
     Ugly implementation of an intrussive list
     author: Vlad Mesco
@@ -96,33 +98,33 @@ void outro() {
 
 template<class T>
 void print(T& value, Expect expected) {
-    printf(". %-16s %c\n", value.toString().c_str(), (expected == value.toString()) ? 'v' : 'x');
+    printf(FORMAT, value.toString().c_str(), (expected == value.toString()) ? 'v' : 'x');
 }
 
 void print(const char* value, bool pass) {
-    printf(". %-16s %c\n", value, (pass) ? 'v' : 'x');
+    printf(FORMAT, value, (pass) ? 'v' : 'x');
     if(pass) successful++;
     else failed++;
 }
 
 void print(const char* value) {
-    printf(". %-16s %c\n", value, ' ');
+    printf(FORMAT, value, ' ');
 }
 
 template<class T>
 void print(UglyList::List<T>& list, Expect expected) {
     for(typename UglyList::List<T>::iterator i = list.begin(); i != list.end(); ++i) {
-        printf(". %-16s %c\n", (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
+        printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
-    printf(". %-16s %c\n", "<end of list>", (!expected ? 'v' : 'x'));
+    printf(FORMAT, "<end of list>", (!expected ? 'v' : 'x'));
 }
 
 template<class T>
 void rprint(UglyList::List<T>& list, Expect expected) {
     for(typename UglyList::List<T>::riterator i = list.rbegin(); i != list.rend(); ++i) {
-        printf(". %-16s %c\n", (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
+        printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
-    printf(". %-16s %c\n", "<end of list>", (!expected ? 'v' : 'x'));
+    printf(FORMAT, "<end of list>", (!expected ? 'v' : 'x'));
 }
 
 void println(const char* s) {
@@ -239,7 +241,6 @@ int main() {
             } else {
                     print("success", true);
             }
-
 
             println("remove using destructor");
             print("see output", true);

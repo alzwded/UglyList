@@ -13,7 +13,7 @@ TODO
 * [ ] add iterator.operator-(iterator)
 * [x] add find(), rfind()
 * [ ] findif(functor)
-* [ ] find, rfind, findif(range)
+* [/] find, rfind, findif(range)
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
