@@ -29,7 +29,7 @@ int main() {
     list.push_back(&(new Element())->link);
 
     for(UglyList::List<Element>::iterator i = list.begin(); i != list.end(); ++i) {
-        printf(". %d\n", (***i).X());
+        printf(". %d\n", (**i)->X());
     }
 
     printf("print in reverse\n");
@@ -80,6 +80,14 @@ int main() {
 
     printf("print using back()\n");
     printf(". %d\n", list.back().X());
+
+    printf("extract an element\n");
+    UglyList::ListNode<Element>* e = list.extract(list.rbegin());
+    printf(". %d\n", (*e)->X());
+    e->remove();
+    for(UglyList::List<Element>::iterator i = list.begin(); i != list.end(); ++i) {
+        printf(". %d\n", (**i)->X());
+    }
 
     printf("remove using destructor\n");
 

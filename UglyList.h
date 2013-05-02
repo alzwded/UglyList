@@ -16,6 +16,7 @@ private:
     T* _ptr;
     struct ListNode* next;
     struct ListNode* prev;
+    friend class List<T>;
 
 public:
     T* ptr() { return _ptr; }
@@ -25,11 +26,9 @@ public:
         : _ptr(that)
     {}
 
-private:
     void remove() {
         delete _ptr;
     }
-    friend class List<T>;
 };
 
 template<class T>
@@ -192,6 +191,15 @@ public:
 
     bool empty() {
         return root->next == root;
+    }
+
+    ListNode<T>* extract(iterator i) {
+        ListNode<T>* ret = *i;
+        ret->next->prev = ret->prev;
+        ret->prev->next = ret->next;
+        ret->next = NULL;
+        ret->prev = NULL;
+        return ret;
     }
 
     void remove(ListNode<T>* node) {
