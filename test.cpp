@@ -9,6 +9,9 @@
     author: Vlad Mesco
 */
 
+static int failed = 0;
+static int successful = 0;
+
 class ElementFactory;
 class Element {
     static int nextX;
@@ -68,9 +71,13 @@ public:
         if(nodes.empty()) return false;
         bool ret = (nodes.front() == other);
         nodes.pop();
+        if(ret) successful++;
+        else failed++;
         return ret;
     }
     bool operator!() {
+        if(nodes.empty()) successful++;
+        else failed++;
         return nodes.empty();
     }
 };
@@ -82,6 +89,11 @@ void intro() {
     printf("--%-16s-%-16s\n", "----------------", "----------------");
 }
 
+void outro() {
+    printf("--%-16s-%-16s\n", "----------------", "----------------");
+    printf("%d comparissons of which %d were good and %d failed\n", successful + failed, successful, failed);
+}
+
 template<class T>
 void print(T& value, Expect expected) {
     printf(". %-16s %c\n", value.toString().c_str(), (expected == value.toString()) ? 'v' : 'x');
@@ -89,6 +101,8 @@ void print(T& value, Expect expected) {
 
 void print(const char* value, bool pass) {
     printf(". %-16s %c\n", value, (pass) ? 'v' : 'x');
+    if(pass) successful++;
+    else failed++;
 }
 
 void print(const char* value) {
@@ -118,114 +132,120 @@ void println(const char* s) {
 int main() {
     intro();
 
-    UglyList::List<Element> list;
-    println("add 3 elements");
-    list.push_back(&(new Element())->link);
-    list.push_back(&(new Element())->link);
-    list.push_back(&(new Element())->link);
-    print(list, Expect(1)(2)(3));
+    {
+            UglyList::List<Element> list;
+            println("add 3 elements");
+            list.push_back(&(new Element())->link);
+            list.push_back(&(new Element())->link);
+            list.push_back(&(new Element())->link);
+            print(list, Expect(1)(2)(3));
 
-    println("print in reverse");
-    rprint(list, Expect(3)(2)(1));
+            println("print in reverse");
+            rprint(list, Expect(3)(2)(1));
 
-    println("remove head using erase(begin())");
-    list.erase(list.begin());
-    print(list, Expect(2)(3));
+            println("remove head using erase(begin())");
+            list.erase(list.begin());
+            print(list, Expect(2)(3));
 
-    println("add new elements");
-    list.push_back(&(new Element())->link);
-    print(list, Expect(2)(3)(4));
+            println("add new elements");
+            list.push_back(&(new Element())->link);
+            print(list, Expect(2)(3)(4));
 
-    println("print elements using index operator");
-    print(**list[1], Expect(3));
-    print(**list[2], Expect(4));
+            println("print elements using index operator");
+            print(**list[1], Expect(3));
+            print(**list[2], Expect(4));
 
-    println("remove element using remove");
-    list.remove(list[1]);
-    print(list, Expect(2)(4));
+            println("remove element using remove");
+            list.remove(list[1]);
+            print(list, Expect(2)(4));
 
-    println("remove tail using pop_back()");
-    list.pop_back();
-    print(list, Expect(2));
+            println("remove tail using pop_back()");
+            list.pop_back();
+            print(list, Expect(2));
 
-    println("push head using push_front()");
-    list.push_front(&(new Element())->link);
-    print(list, Expect(5)(2));
+            println("push head using push_front()");
+            list.push_front(&(new Element())->link);
+            print(list, Expect(5)(2));
 
-    println("print using back()");
-    print(list.back(), Expect(2));
+            println("print using back()");
+            print(list.back(), Expect(2));
 
-    println("extract an element");
-    UglyList::ListNode<Element>* e = list.extract(list.rbegin());
-    print(**e, Expect(2));
-    print("remaining list");
-    print(list, Expect(5));
+            println("extract an element");
+            UglyList::ListNode<Element>* e = list.extract(list.rbegin());
+            print(**e, Expect(2));
+            print("remaining list");
+            print(list, Expect(5));
 
-    println("call remove on node that's not in a list anymore");
-    e->remove();
-    print("success", true);
+            println("call remove on node that's not in a list anymore");
+            e->remove();
+            print("success", true);
 
-    println("add node and remove it with listnode->remove");
-    Element* removabe = new Element();
-    list.push_front(&removabe->link);
-    println(". calling remove");
-    removabe->link.remove();
-    print(list, Expect(5));
+            println("add node and remove it with listnode->remove");
+            Element* removabe = new Element();
+            list.push_front(&removabe->link);
+            println(". calling remove");
+            removabe->link.remove();
+            print(list, Expect(5));
 
-    println("Add 3 more elements");
-    list.push_back(&(new Element())->link);
-    list.push_back(&(new Element())->link);
-    list.push_back(&(new Element())->link);
-    print(list, Expect(5)(7)(8)(9));
+            println("Add 3 more elements");
+            list.push_back(&(new Element())->link);
+            list.push_back(&(new Element())->link);
+            list.push_back(&(new Element())->link);
+            print(list, Expect(5)(7)(8)(9));
 
-    println("swap elements 1 and 3");
-    UglyList::List<Element>::iterator i1 = list.begin() + 1;
-    UglyList::List<Element>::iterator i3 = list.begin() + 3;
-    list.swap(i1, i3);
-    print(list, Expect(5)(9)(8)(7));
+            println("swap elements 1 and 3");
+            UglyList::List<Element>::iterator i1 = list.begin() + 1;
+            UglyList::List<Element>::iterator i3 = list.begin() + 3;
+            list.swap(i1, i3);
+            print(list, Expect(5)(9)(8)(7));
 
-    println("iterate in reverse");
-    rprint(list, Expect(7)(8)(9)(5));
+            println("iterate in reverse");
+            rprint(list, Expect(7)(8)(9)(5));
 
-    println("splice in a list of 3 new elements");
-    UglyList::List<Element> otherList;
-    otherList.push_back(&(new Element())->link);
-    otherList.push_back(&(new Element())->link);
-    otherList.push_back(&(new Element())->link);
-    list.splice(list.begin(), otherList, otherList.begin(), otherList.end() - 1);
-    print(list, Expect(5)(10)(11)(9)(8)(7));
+            println("splice in a list of 3 new elements");
+            UglyList::List<Element> otherList;
+            otherList.push_back(&(new Element())->link);
+            otherList.push_back(&(new Element())->link);
+            otherList.push_back(&(new Element())->link);
+            list.splice(list.begin(), otherList, otherList.begin(), otherList.end() - 1);
+            print(list, Expect(5)(10)(11)(9)(8)(7));
 
-    println("call clear()");
-    otherList.clear();
-    print(otherList, Expect());
-        
-    println("find with functor");
-    Element findThis(ElementFactory::NewElement(11));
-    UglyList::List<Element>::iterator found1 = list.find(findThis, &ElementFactory::compareElement);
-    if(found1 == list.end()) {
-        print("failed", false);
-    } else {
-        print(***found1, Expect(11));
+            println("call clear()");
+            otherList.clear();
+            print(otherList, Expect());
+
+            println("find with functor");
+            Element findThis(ElementFactory::NewElement(11));
+            UglyList::List<Element>::iterator found1 = list.find(findThis, &ElementFactory::compareElement);
+            if(found1 == list.end()) {
+                    print("failed", false);
+            } else {
+                    print(***found1, Expect(11));
+            }
+
+            println("rfind with functor");
+            UglyList::List<Element>::riterator found2 = list.rfind(findThis, &ElementFactory::compareElement);
+            if(found2 == list.rend()) {
+                    print("failed", false);
+            } else {
+                    print(***found2, Expect(11));
+            }
+
+            println("fail finding");
+            Element unfindable(ElementFactory::NewElement(0));
+            UglyList::List<Element>::riterator found3 = list.rfind(unfindable, &ElementFactory::compareElement);
+            if(found3 != list.rend()) {
+                    print("failed", false);
+            } else {
+                    print("success", true);
+            }
+
+
+            println("remove using destructor");
+            print("see output", true);
     }
 
-    println("rfind with functor");
-    UglyList::List<Element>::riterator found2 = list.rfind(findThis, &ElementFactory::compareElement);
-    if(found2 == list.rend()) {
-        print("failed", false);
-    } else {
-        print(***found2, Expect(11));
-    }
-
-    println("fail finding");
-    Element unfindable(ElementFactory::NewElement(0));
-    UglyList::List<Element>::riterator found3 = list.rfind(unfindable, &ElementFactory::compareElement);
-    if(found3 != list.rend()) {
-        print("failed", false);
-    } else {
-        print("success", true);
-    }
-
-    println("remove using destructor");
+    outro();
 
     return 0;
 }
