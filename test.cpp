@@ -85,6 +85,18 @@ int main() {
     removabe->link.remove();
     print(list);
 
+    printf("Add 3 more elements\n");
+    list.push_back(&(new Element())->link);
+    list.push_back(&(new Element())->link);
+    list.push_back(&(new Element())->link);
+    print(list);
+
+    printf("swap elements 1 and 3\n");
+    UglyList::List<Element>::iterator i1 = list.begin() + 1;
+    UglyList::List<Element>::iterator i3 = list.begin() + 3;
+    list.swap(i1, i3);
+    print(list);
+
     printf("remove using destructor\n");
 
     return 0;

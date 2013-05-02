@@ -9,7 +9,7 @@ TODO
 * [ ] unit tests
 * [x] extract to remove an element from the list without baleeting it
 * [ ] splice(iterator, otherList, iterator, iterator) method to transfer an element to another list
-* [ ] swap(iterator, iterator)
+* [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
 * [ ] add find(), rfind()
 * [ ] clear()
