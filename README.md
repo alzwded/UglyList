@@ -12,8 +12,10 @@ TODO
 * [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
 * [ ] add find(), rfind()
+* [ ] find(functor)
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
 * [ ] remove_if
+* [ ] extract_if -- return a new list of stuff that matches a functor
 * [x] make list passable by value
