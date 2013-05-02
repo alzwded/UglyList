@@ -102,6 +102,18 @@ int main() {
         printf(". %d\n", (**i)->X());
     }
 
+    printf("splice in a list of 3 new elements\n");
+    UglyList::List<Element> otherList;
+    otherList.push_back(&(new Element())->link);
+    otherList.push_back(&(new Element())->link);
+    otherList.push_back(&(new Element())->link);
+    list.splice(list.begin(), otherList, otherList.begin(), otherList.end() - 1);
+    print(list);
+
+    printf("call clear()\n");
+    otherList.clear();
+    print(otherList);
+
     printf("remove using destructor\n");
 
     return 0;

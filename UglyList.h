@@ -147,6 +147,23 @@ public:
         delete root;
     }
 
+    void splice(iterator pos, List<T>& other, iterator first, iterator last) {
+        for(iterator p = first; p != last;) {
+            iterator prev = p;
+            ++p;
+            insert(other.extract(prev), *pos, *(pos + 1));
+            ++pos;
+        }
+    }
+
+    void splice(iterator pos, List<T>& other, iterator first) {
+        splice(pos, other, first, other.end());
+    }
+
+    void splice(iterator pos, List<T>& other) {
+        splice(pos, other, other.begin(), other.end());
+    }
+
     void clear() {
         while(!empty()) {
             remove(root->next);
