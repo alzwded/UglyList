@@ -10,6 +10,6 @@ clean:
 .PHONY: clean
 
 test: a.out
-	./a.out
+	./a.out > test.log
 
 .PHONY: test
