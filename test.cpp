@@ -83,8 +83,17 @@ int main() {
 
     printf("extract an element\n");
     UglyList::ListNode<Element>* e = list.extract(list.rbegin());
-    printf(". %d\n", (*e)->X());
+    printf(". extracted: %d\n", (*e)->X());
     e->remove();
+    for(UglyList::List<Element>::iterator i = list.begin(); i != list.end(); ++i) {
+        printf(". %d\n", (**i)->X());
+    }
+
+    printf("add node and remove it with listnode->remove\n");
+    Element* removabe = new Element();
+    list.push_front(&removabe->link);
+    printf(". calling remove\n");
+    removabe->link.remove();
     for(UglyList::List<Element>::iterator i = list.begin(); i != list.end(); ++i) {
         printf(". %d\n", (**i)->X());
     }
