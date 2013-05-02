@@ -147,8 +147,10 @@ public:
         delete root;
     }
 
-    iterator rfind(T& what) {
-        for(riterator i = rbegin(); i != rend(); ++i) {
+    typedef bool (*compFunc)(const T& a, const T& b);
+
+    riterator rfind(T& what, riterator first, riterator last) {
+        for(riterator i = first; i != last; ++i) {
             if(***i == what) {
                 return i;
             }
@@ -156,31 +158,63 @@ public:
         return rend();
     }
 
-    iterator rfind(T& what, bool (*func)(const T& left, const T& right)) {
-        for(riterator i = rbegin(); i != rend(); ++i) {
+    riterator rfind(T& what, riterator first) {
+        return rfind(what, first, rend());
+    }
+
+    riterator rfind(T& what) {
+        return rfind(what, rbegin(), rend());
+    }
+
+    riterator rfind(T& what, compFunc func, riterator first, riterator last) {
+        for(riterator i = first; i != last; ++i) {
             if(func(***i, what)) {
                 return i;
             }
         }
         return rend();
+    }
+
+    riterator rfind(T& what, compFunc func, riterator first) {
+        return rfind(what, func, first, rend());
+    }
+
+    riterator rfind(T& what, compFunc func) {
+        return rfind(what, func, rbegin(), rend());
+    }
+
+    iterator find(T& what, iterator first, iterator last) {
+        for(iterator i = first; i != last; ++i) {
+            if(***i == what) {
+                return i;
+            }
+        }
+        return end();
+    }
+
+    iterator find(T& what, iterator first) {
+        return find(what, first, end());
     }
 
     iterator find(T& what) {
-        for(iterator i = begin(); i != end(); ++i) {
-            if(***i == what) {
+        return find(what, begin(), end());
+    }
+
+    iterator find(T& what, compFunc func, iterator first, iterator last) {
+        for(iterator i = first; i != last; ++i) {
+            if(func(***i, what)) {
                 return i;
             }
         }
         return end();
     }
 
-    iterator find(T& what, bool (*func)(const T& left, const T& right)) {
-        for(iterator i = begin(); i != end(); ++i) {
-            if(func(***i, what)) {
-                return i;
-            }
-        }
-        return end();
+    iterator find(T& what, compFunc func, iterator first) {
+        return find(what, func, first, end());
+    }
+
+    iterator find(T& what, compFunc func) {
+        return find(what, func, begin(), end());
     }
 
     void splice(iterator pos, List<T>& other, iterator first, iterator last) {
