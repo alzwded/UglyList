@@ -2,7 +2,7 @@
 #include "UglyList.h"
 #include <string>
 #include <sstream>
-#include <list>
+#include <queue>
 
 /*
     Ugly implementation of an intrussive list
@@ -25,46 +25,37 @@ public:
 };
 
 class Expect {
-    std::list<std::string> nodes;
-    std::list<std::string>::iterator i;
+    std::queue<std::string> nodes;
 public:
-    Expect(void)
-    {
-        i = nodes.end();
-    }
+    Expect(void) {}
     Expect(const char* node)
     {
-        nodes.push_back(std::string(node));
-        i = nodes.begin();
+        nodes.push(std::string(node));
     }
     Expect(const int node)
     {
         std::stringstream s;
         s << node;
-        nodes.push_back(s.str());
-        i = nodes.begin();
+        nodes.push(s.str());
     }
     Expect& operator()(const char* node) {
-        nodes.push_back(std::string(node));
-        i = nodes.begin();
+        nodes.push(std::string(node));
         return *this;
     }
     Expect& operator()(const int node) {
         std::stringstream s;
         s << node;
-        nodes.push_back(s.str());
-        i = nodes.begin();
+        nodes.push(s.str());
         return *this;
     }
     bool operator==(const std::string& other) {
-        if(i == nodes.end()) {
-            if(nodes.empty()) return false;
-            i = nodes.begin();
-        }
-        return *i++ == other;
+        if(nodes.empty()) return false;
+        bool ret = (nodes.front() == other);
+        nodes.pop();
+        return ret;
     }
     bool operator!() {
-        return i == nodes.end();
+        return nodes.empty();
     }
 };
 
