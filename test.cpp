@@ -208,6 +208,23 @@ int main() {
         print(***found1, Expect(11));
     }
 
+    println("rfind with functor");
+    UglyList::List<Element>::riterator found2 = list.rfind(findThis, &ElementFactory::compareElement);
+    if(found2 == list.rend()) {
+        print("failed", false);
+    } else {
+        print(***found2, Expect(11));
+    }
+
+    println("fail finding");
+    Element unfindable(ElementFactory::NewElement(0));
+    UglyList::List<Element>::riterator found3 = list.rfind(unfindable, &ElementFactory::compareElement);
+    if(found3 != list.rend()) {
+        print("failed", false);
+    } else {
+        print("success", true);
+    }
+
     println("remove using destructor");
 
     return 0;

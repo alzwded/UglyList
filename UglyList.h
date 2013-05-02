@@ -147,6 +147,24 @@ public:
         delete root;
     }
 
+    iterator rfind(T& what) {
+        for(riterator i = rbegin(); i != rend(); ++i) {
+            if(***i == what) {
+                return i;
+            }
+        }
+        return rend();
+    }
+
+    iterator rfind(T& what, bool (*func)(const T& left, const T& right)) {
+        for(riterator i = rbegin(); i != rend(); ++i) {
+            if(func(***i, what)) {
+                return i;
+            }
+        }
+        return rend();
+    }
+
     iterator find(T& what) {
         for(iterator i = begin(); i != end(); ++i) {
             if(***i == what) {
