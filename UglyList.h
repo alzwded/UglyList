@@ -147,6 +147,24 @@ public:
         delete root;
     }
 
+    iterator find(T& what) {
+        for(iterator i = begin(); i != end(); ++i) {
+            if(***i == what) {
+                return i;
+            }
+        }
+        return end();
+    }
+
+    iterator find(T& what, bool (*func)(const T& left, const T& right)) {
+        for(iterator i = begin(); i != end(); ++i) {
+            if(func(***i, what)) {
+                return i;
+            }
+        }
+        return end();
+    }
+
     void splice(iterator pos, List<T>& other, iterator first, iterator last) {
         for(iterator p = first; p != last;) {
             iterator prev = p;

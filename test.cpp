@@ -9,11 +9,14 @@
     author: Vlad Mesco
 */
 
+class ElementFactory;
 class Element {
     static int nextX;
     int x;
+    Element(const int preferred) : link(this), x(preferred) {}
+    friend ElementFactory;
 public:
-    int X() { return x; }
+    int X() const { return x; }
     std::string toString() {
         std::stringstream s; 
         s << X();
@@ -23,6 +26,18 @@ public:
     Element() : link(this) , x(++nextX) { printf(": hello from %d\n", x); }
     ~Element() { printf(": bye bye from %d\n", x); }
 };
+
+class ElementFactory {
+    ElementFactory() {}
+public:
+    static Element NewElement(const int preferred) {
+        return Element(preferred);
+    }
+    static bool compareElement(const Element& a, const Element& b) {
+        return a.X() == b.X();
+    }
+};
+
 
 class Expect {
     std::queue<std::string> nodes;
@@ -93,6 +108,10 @@ void rprint(UglyList::List<T>& list, Expect expected) {
         printf(". %-16s %c\n", (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
     printf(". %-16s %c\n", "<end of list>", (!expected ? 'v' : 'x'));
+}
+
+void println(const char* s) {
+    printf("%s\n", s);
 }
 
 int main() {
@@ -178,8 +197,17 @@ int main() {
     printf("call clear()\n");
     otherList.clear();
     print(otherList, Expect());
+        
+    printf("find with functor\n");
+    Element findThis(ElementFactory::NewElement(11));
+    UglyList::List<Element>::iterator found1 = list.find(findThis, &ElementFactory::compareElement);
+    if(found1 == list.end()) {
+        print("failed", false);
+    } else {
+        print(***found1, Expect(11));
+    }
 
-    printf("remove using destructor\n");
+    println("remove using destructor");
 
     return 0;
 }
