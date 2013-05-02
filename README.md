@@ -12,7 +12,7 @@ TODO
 * [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
 * [ ] add find(), rfind()
-* [ ] clear()
+* [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
 * [ ] remove_if
