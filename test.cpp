@@ -97,6 +97,11 @@ int main() {
     list.swap(i1, i3);
     print(list);
 
+    printf("iterate in reverse\n");
+    for(UglyList::List<Element>::riterator i = list.rbegin(); i != list.rend(); ++i) {
+        printf(". %d\n", (**i)->X());
+    }
+
     printf("remove using destructor\n");
 
     return 0;
