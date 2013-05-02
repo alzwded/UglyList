@@ -143,10 +143,14 @@ public:
 
     ~List()
     {
+        clear();
+        delete root;
+    }
+
+    void clear() {
         while(!empty()) {
             remove(root->next);
         }
-        delete root;
     }
 
     void insert(ListNode<T>* node, ListNode<T>* prev, ListNode<T>* next) {
