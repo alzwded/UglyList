@@ -8,7 +8,7 @@
 
 namespace UglyList {
 
-template<typename T> class List;
+template<class T> class List;
 
 template<class T>
 struct ListNode {
@@ -147,37 +147,39 @@ public:
         delete root;
     }
 
-    typedef bool (*compFunc)(const T&, const T&);
-    typedef bool (*pickFunc)(const T&);
-    typedef void (*predicate)(const T&);
-
+    template<typename pickFunc>
     iterator find_if(pickFunc func, iterator first, iterator last) {
         for(iterator i = first; i != last; ++i) {
-            if(func(i)) return i;
+            if(func(***i)) return i;
         }
         return end();
     }
 
+    template<typename pickFunc>
     iterator find_if(pickFunc func, iterator first) {
         return find_if(func, first, end());
     }
 
-    iterator find_if(pickFunc, func) {
+    template<typename pickFunc>
+    iterator find_if(pickFunc func) {
         return find_if(func, begin(), end());
     }
 
+    template<class pickFunc>
     riterator rfind_if(pickFunc func, riterator first, riterator last) {
         for(riterator i = first; i != last; ++i) {
-            if(func(i)) return i;
+            if(func(***i)) return i;
         }
         return rend();
     }
 
+    template<class pickFunc>
     riterator rfind_if(pickFunc func, riterator first) {
         return rfind_if(func, first, rend());
     }
 
-    riterator rfind_if(pickFunc, func) {
+    template<class pickFunc>
+    riterator rfind_if(pickFunc func) {
         return rfind_if(func, rbegin(), rend());
     }
 
@@ -198,6 +200,7 @@ public:
         return rfind(what, rbegin(), rend());
     }
 
+    template<class compFunc>
     riterator rfind(T& what, compFunc func, riterator first, riterator last) {
         for(riterator i = first; i != last; ++i) {
             if(func(***i, what)) {
@@ -207,10 +210,12 @@ public:
         return rend();
     }
 
+    template<class compFunc>
     riterator rfind(T& what, compFunc func, riterator first) {
         return rfind(what, func, first, rend());
     }
 
+    template<class compFunc>
     riterator rfind(T& what, compFunc func) {
         return rfind(what, func, rbegin(), rend());
     }
@@ -232,6 +237,7 @@ public:
         return find(what, begin(), end());
     }
 
+    template<class compFunc>
     iterator find(T& what, compFunc func, iterator first, iterator last) {
         for(iterator i = first; i != last; ++i) {
             if(func(***i, what)) {
@@ -241,10 +247,12 @@ public:
         return end();
     }
 
+    template<class compFunc>
     iterator find(T& what, compFunc func, iterator first) {
         return find(what, func, first, end());
     }
 
+    template<class compFunc>
     iterator find(T& what, compFunc func) {
         return find(what, func, begin(), end());
     }

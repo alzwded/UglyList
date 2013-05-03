@@ -57,6 +57,17 @@ public:
     }
 };
 
+struct pick_functor {
+    void setX(const int x) { _x = x; }
+    pick_functor(const int x) : _x(x) {}
+    bool operator()(const Element& x) {
+        if(x.X() == _x) return true;
+        else return false;
+    }
+private:
+    int _x;
+};
+
 class ExpectInt {
     std::queue<int> nodes;
 public:
@@ -66,6 +77,7 @@ public:
     }
     ExpectInt& operator()(const int x) {
         nodes.push(x);
+        return *this;
     }
     bool operator!() {
         return nodes.empty();
@@ -311,6 +323,24 @@ int main() {
             print(***found4, Expect(11));
         } else {
             print("failed", false);
+        }
+
+        println("find_if");
+        pick_functor aPickFunctor(11);
+        UglyList::List<Element>::iterator found6 = list.find_if(aPickFunctor);
+        if(found6 == list.end()) {
+            print("failed", false);
+        } else {
+            print(***found6, Expect(11));
+        }
+
+        println("find_if fails");
+        aPickFunctor.setX(-1);
+        UglyList::List<Element>::iterator found7 = list.find_if(aPickFunctor, found6 + 1);
+        if(found7 != list.end()) {
+            print("failed", false);
+        } else {
+            print("success", true);
         }
 
 //=DON'T=TRIM=HERE====================================START
