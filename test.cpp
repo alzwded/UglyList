@@ -33,10 +33,12 @@ public:
     UglyList::ListNode<Element> link;
     Element() : link(this) , x(++nextX) , talkative(true) { printf(": hello from %d\n", x); }
     ~Element() {
-        if(talkative) printf(": bye bye from %d\n", x);
-        std::set<int>::iterator f = expectedToBeDestroyed.find(x);
-        if(f != expectedToBeDestroyed.end()) {
-            expectedToBeDestroyed.erase(f);
+        if(talkative) {
+            printf(": bye bye from %d\n", x);
+            std::set<int>::iterator f = expectedToBeDestroyed.find(x);
+            if(f != expectedToBeDestroyed.end()) {
+                expectedToBeDestroyed.erase(f);
+            }
         }
     }
     bool operator==(const Element& other) {

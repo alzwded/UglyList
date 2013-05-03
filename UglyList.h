@@ -147,7 +147,39 @@ public:
         delete root;
     }
 
-    typedef bool (*compFunc)(const T& a, const T& b);
+    typedef bool (*compFunc)(const T&, const T&);
+    typedef bool (*pickFunc)(const T&);
+    typedef void (*predicate)(const T&);
+
+    iterator find_if(pickFunc func, iterator first, iterator last) {
+        for(iterator i = first; i != last; ++i) {
+            if(func(i)) return i;
+        }
+        return end();
+    }
+
+    iterator find_if(pickFunc func, iterator first) {
+        return find_if(func, first, end());
+    }
+
+    iterator find_if(pickFunc, func) {
+        return find_if(func, begin(), end());
+    }
+
+    riterator rfind_if(pickFunc func, riterator first, riterator last) {
+        for(riterator i = first; i != last; ++i) {
+            if(func(i)) return i;
+        }
+        return rend();
+    }
+
+    riterator rfind_if(pickFunc func, riterator first) {
+        return rfind_if(func, first, rend());
+    }
+
+    riterator rfind_if(pickFunc, func) {
+        return rfind_if(func, rbegin(), rend());
+    }
 
     riterator rfind(T& what, riterator first, riterator last) {
         for(riterator i = first; i != last; ++i) {

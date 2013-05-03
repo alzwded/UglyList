@@ -13,11 +13,13 @@ TODO
 * [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
 * [x] add find(), rfind()
-* [ ] findif(functor)
+* [x] findif(functor)
 * [/] find, rfind, findif(range)
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
+* [ ] foreach(predicate)
+* [ ] foreach_if(predicate)
 * [ ] remove_if
 * [ ] extract_if -- return a new list of stuff that matches a functor
 * [x] make list passable by value
