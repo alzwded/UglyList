@@ -12,6 +12,7 @@ TODO
 * [x] splice(iterator, otherList, iterator, iterator) method to transfer an element to another list
 * [x] swap(iterator, iterator)
 * [ ] add iterator.operator-(iterator)
+* [ ] size()
 * [x] add find(), rfind()
 * [x] findif(functor)
 * [x] find, rfind, findif(range)
@@ -20,8 +21,8 @@ TODO
 * [ ] sort(functor)
 * [x] foreach(predicate)
 * ~~[ ] foreach_if(predicate)~~ overruled
-* [ ] remove_if (new idea!)
-* [ ] extract_if -- return a new list of stuff that matches a functor (same new idea!)
+* [x] remove_if (new idea!)
+* [x] extract_if -- return a new list of stuff that matches a functor (same new idea!)
 * [x] make list passable by value
 
 Lessons Learnt

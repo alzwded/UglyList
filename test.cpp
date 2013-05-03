@@ -154,7 +154,7 @@ void intro() {
 
 void outro() {
     printf("--%-16s-%-16s\n", "----------------", "----------------");
-    printf("%d comparissons of which %d were good and %d failed\n", successful + failed, successful, failed);
+    printf("%d checks of which %d were good and %d failed\n", successful + failed, successful, failed);
 }
 
 template<class T>
@@ -389,6 +389,31 @@ int main() {
     }
     wasEverythingDestroyed();
     print("success", true);
+
+    {
+        println("remove_if");
+        UglyList::List<Element> a;
+        a.push_back(&(new Element())->link); // 15
+        a.push_back(&(new Element())->link); // 16
+        a.push_back(&(new Element())->link); // 17
+        struct holder {
+            static bool f(const Element& e) {
+                return e.X() == 16;
+            }
+            static bool g(const Element& e) {
+                return e.X() == 15;
+            }
+        };
+        expectToBeDestroyed(ExpectInt(16));
+        a.remove_if(&holder::f);
+        wasEverythingDestroyed();
+        print(a, Expect(15)(17));
+
+        println("extract_if");
+        UglyList::List<Element> b = a.extract_if(&holder::g);
+        print(a, Expect(17));
+        print(b, Expect(15));
+    }
 
     outro();
 

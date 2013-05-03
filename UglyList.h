@@ -159,6 +159,36 @@ public:
         }
     }
 
+    template<typename pickFunc>
+    void remove_if(pickFunc f) {
+        iterator first = begin();
+        iterator last = end();
+        while(first != last) {
+            iterator next = first;
+            next++;
+            if(f(***first)) {
+                erase(first);
+            }
+            first = next;
+        }
+    }
+
+    template<typename pickFunc>
+    List<T> extract_if(pickFunc f) {
+        List<T> ret;
+        iterator first = begin();
+        iterator last = end();
+        while(first != last) {
+            iterator next = first;
+            next++;
+            if(f(***first)) {
+                ret.push_back(extract(first));
+            }
+            first = next;
+        }
+        return ret;
+    }
+
     template<typename predicate>
     void for_each(predicate f, iterator first, iterator last) {
         for(iterator i = first; i != last; ++i) {
