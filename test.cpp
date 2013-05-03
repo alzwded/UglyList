@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <queue>
+#include <set>
 
 #define FORMAT ". %-16s -%c-\n"
 
@@ -13,6 +14,7 @@
 
 static int failed = 0;
 static int successful = 0;
+static std::set<int> expectedToBeDestroyed;
 
 class ElementFactory;
 class Element {
@@ -30,7 +32,13 @@ public:
     }
     UglyList::ListNode<Element> link;
     Element() : link(this) , x(++nextX) , talkative(true) { printf(": hello from %d\n", x); }
-    ~Element() { if(talkative) printf(": bye bye from %d\n", x); }
+    ~Element() {
+        if(talkative) printf(": bye bye from %d\n", x);
+        std::set<int>::iterator f = expectedToBeDestroyed.find(x);
+        if(f != expectedToBeDestroyed.end()) {
+            expectedToBeDestroyed.erase(f);
+        }
+    }
     bool operator==(const Element& other) {
         return X() == other.X();
     }
@@ -47,6 +55,25 @@ public:
     }
 };
 
+class ExpectInt {
+    std::queue<int> nodes;
+public:
+    ExpectInt(void) {}
+    ExpectInt(const int x) {
+        nodes.push(x);
+    }
+    ExpectInt& operator()(const int x) {
+        nodes.push(x);
+    }
+    bool operator!() {
+        return nodes.empty();
+    }
+    int operator*() {
+        int ret = nodes.front(); // don't care
+        nodes.pop();
+        return ret;
+    }
+};
 
 class Expect {
     std::queue<std::string> nodes;
@@ -110,6 +137,25 @@ void print(const char* value, bool pass) {
     else failed++;
 }
 
+void expectToBeDestroyed(ExpectInt expected) {
+    expectedToBeDestroyed.clear();
+    while(!expected) expectedToBeDestroyed.insert(*expected);
+}
+
+void wasEverythingDestroyed() {
+    if(expectedToBeDestroyed.empty()) {
+        print("success", true);
+        printf(". all elements that were supposed to be destroyed were destroyed\n");
+    } else {
+        print("failed", false);
+        printf(". element(s) ");
+        for(std::set<int>::iterator i = expectedToBeDestroyed.begin(); i != expectedToBeDestroyed.end(); ++i) {
+            printf("%d,", *i);
+        }
+        printf(" was/were not destroyed.\n");
+    }
+}
+
 void print(const char* value) {
     printf(FORMAT, value, ' ');
 }
@@ -149,7 +195,9 @@ int main() {
         rprint(list, Expect(3)(2)(1));
 
         println("remove head using erase(begin())");
+        expectToBeDestroyed(ExpectInt(1));
         list.erase(list.begin());
+        wasEverythingDestroyed();
         print(list, Expect(2)(3));
 
         println("add new elements");
@@ -165,7 +213,9 @@ int main() {
         print(list, Expect(2)(4));
 
         println("remove tail using pop_back()");
+        expectToBeDestroyed(ExpectInt(4));
         list.pop_back();
+        wasEverythingDestroyed();
         print(list, Expect(2));
 
         println("push head using push_front()");
@@ -182,14 +232,17 @@ int main() {
         print(list, Expect(5));
 
         println("call remove on node that's not in a list anymore");
+        expectToBeDestroyed(ExpectInt(2));
         e->remove();
-        print("success", true);
+        wasEverythingDestroyed();
 
         println("add node and remove it with listnode->remove");
         Element* removabe = new Element();
         list.push_front(&removabe->link);
         println(". calling remove");
+        expectToBeDestroyed(ExpectInt(6));
         removabe->link.remove();
+        wasEverythingDestroyed();
         print(list, Expect(5));
 
         println("Add 3 more elements");
@@ -216,7 +269,9 @@ int main() {
         print(list, Expect(5)(10)(11)(9)(8)(7));
 
         println("call clear()");
+        expectToBeDestroyed(ExpectInt(12));
         otherList.clear();
+        wasEverythingDestroyed();
         print(otherList, Expect());
 
         println("find with functor");
@@ -254,8 +309,9 @@ int main() {
         }
 
         println("remove using destructor");
-        print("see output", true);
+        expectToBeDestroyed(ExpectInt(5)(10)(11)(9)(8)(7));
     }
+    wasEverythingDestroyed();
 
     outro();
 
