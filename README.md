@@ -19,9 +19,9 @@ TODO
 * [ ] emplace()
 * [ ] sort(functor)
 * [x] foreach(predicate)
-* [ ] foreach_if(predicate)
-* [ ] remove_if
-* [ ] extract_if -- return a new list of stuff that matches a functor
+* ~[ ] foreach_if(predicate)~ overruled
+* [x] remove_if
+* [x] extract_if -- return a new list of stuff that matches a functor
 * [x] make list passable by value
 
 Lessons Learnt

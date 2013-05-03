@@ -147,6 +147,25 @@ public:
         delete root;
     }
 
+    template<typename pickFunc>
+    List<T> extract_if(pickFunc f) {
+        List<T> ret;
+        for(iterator i = begin(); i != end(); ++i) {
+            if(f(***i)) {
+                ret.insert(extract(i), ret.root->prev, ret.root);
+            }
+        }
+    }
+
+    template<typename pickFunc>
+    void remove_if(pickFunc f) {
+        for(iterator i = begin(); i != end(); ++i) {
+            if(f(***i)) {
+                erase(i);
+            }
+        }
+    }
+
     template<typename predicate>
     void for_each(predicate f, iterator first, iterator last) {
         for(iterator i = first; i != last; ++i) {
