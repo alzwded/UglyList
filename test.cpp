@@ -20,7 +20,7 @@ class Element {
     int x;
     bool talkative;
     Element(const int preferred) : link(this), x(preferred), talkative(false) {}
-    friend ElementFactory;
+    friend class ElementFactory;
 public:
     int X() const { return x; }
     std::string toString() {
