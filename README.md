@@ -30,6 +30,7 @@ Lessons Learnt
 Lesson 1
 --------
 
+```C++
 struct T { ... }
 void main() {
     UglyList::List<T> list;
@@ -38,7 +39,9 @@ void main() {
     } f;
     UglyList::List<T>::iterator r = list.find_if(f); // will never compile. ever.
 }
+```
 
+```C++
 struct T { ... }
 struct functor {
     bool operator(const T&) { return false; }
@@ -47,3 +50,4 @@ void main() {
     UglyList::List<T> list;
     UglyList::List<T>::iterator r = list.find_if(f); // will compile successfully and it will work.
 }
+```
