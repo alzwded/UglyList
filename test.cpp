@@ -162,6 +162,7 @@ void print(const char* value) {
 
 template<class T>
 void print(UglyList::List<T>& list, Expect expected) {
+    printf(". printing list:\n");
     for(typename UglyList::List<T>::iterator i = list.begin(); i != list.end(); ++i) {
         printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
@@ -170,6 +171,7 @@ void print(UglyList::List<T>& list, Expect expected) {
 
 template<class T>
 void rprint(UglyList::List<T>& list, Expect expected) {
+    printf(". rprinting list:\n");
     for(typename UglyList::List<T>::riterator i = list.rbegin(); i != list.rend(); ++i) {
         printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
@@ -267,6 +269,7 @@ int main() {
         otherList.push_back(&(new Element())->link);
         list.splice(list.begin(), otherList, otherList.begin(), otherList.end() - 1);
         print(list, Expect(5)(10)(11)(9)(8)(7));
+        print(otherList, Expect(12));
 
         println("call clear()");
         expectToBeDestroyed(ExpectInt(12));
