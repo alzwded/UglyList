@@ -31,6 +31,9 @@ public:
     UglyList::ListNode<Element> link;
     Element() : link(this) , x(++nextX) , talkative(true) { printf(": hello from %d\n", x); }
     ~Element() { if(talkative) printf(": bye bye from %d\n", x); }
+    bool operator==(const Element& other) {
+        return X() == other.X();
+    }
 };
 
 class ElementFactory {
@@ -240,6 +243,14 @@ int main() {
             print("failed", false);
         } else {
             print("success", true);
+        }
+
+        println("find range");
+        UglyList::List<Element>::iterator found4 = list.find(findThis, list.begin() + 1, list.end() - 2);
+        if(found4 != list.end()) {
+            print(***found4, Expect(11));
+        } else {
+            print("failed", false);
         }
 
         println("remove using destructor");
