@@ -308,10 +308,12 @@ int main() {
             print("failed", false);
         }
 
+//=DON'T=TRIM=HERE====================================START
         println("remove using destructor");
         expectToBeDestroyed(ExpectInt(5)(10)(11)(9)(8)(7));
     }
     wasEverythingDestroyed();
+//=DON'T=TRIM=HERE======================================END
 
     outro();
 
