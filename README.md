@@ -21,7 +21,7 @@ TODO
 * [x] foreach(predicate)
 * ~~[ ] foreach_if(predicate)~~ overruled
 * [ ] remove_if (new idea!)
-* ~~[x] extract_if -- return a new list of stuff that matches a functor~~ unfeasable
+* [ ] extract_if -- return a new list of stuff that matches a functor (same new idea!)
 * [x] make list passable by value
 
 Lessons Learnt
