@@ -136,34 +136,25 @@ public:
         : root(new ListNode<T>(NULL))
         , cache(NULL)
         , cacheI(0)
+        , rc(new int(1))
     {
         root->next = root;
         root->prev = root;
     }
 
+    List(const List<T>& other)
+        : root(other.root)
+        , cache(NULL)
+        , cacheI(0)
+        , rc(other.rc)
+    {
+        ++*rc;
+    }
+
     ~List()
     {
         clear();
-        delete root;
-    }
-
-    template<typename pickFunc>
-    List<T> extract_if(pickFunc f) {
-        List<T> ret;
-        for(iterator i = begin(); i != end(); ++i) {
-            if(f(***i)) {
-                ret.insert(extract(i), ret.root->prev, ret.root);
-            }
-        }
-    }
-
-    template<typename pickFunc>
-    void remove_if(pickFunc f) {
-        for(iterator i = begin(); i != end(); ++i) {
-            if(f(***i)) {
-                erase(i);
-            }
-        }
+        if(--*rc) delete root;
     }
 
     template<typename predicate>
@@ -416,7 +407,7 @@ private:
     ListNode<T>* root;
     iterator cache;
     int cacheI;
-
+    int* rc;
 };
 
 } // template UglyList

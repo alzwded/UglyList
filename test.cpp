@@ -372,6 +372,18 @@ int main() {
     wasEverythingDestroyed();
 //=DON'T=TRIM=HERE======================================END
 
+    {
+        println("test list transfer");
+        UglyList::List<Element> a;
+        a.push_back(&(new Element())->link); // 13
+        a.push_back(&(new Element())->link); // 14
+        UglyList::List<Element> b = a;
+        expectToBeDestroyed(ExpectInt(13)(14));
+        print(a, Expect(13)(14));
+        print(b, Expect(13)(14));
+    }
+    wasEverythingDestroyed();
+
     outro();
 
     return 0;

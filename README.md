@@ -20,8 +20,8 @@ TODO
 * [ ] sort(functor)
 * [x] foreach(predicate)
 * ~[ ] foreach_if(predicate)~ overruled
-* [x] remove_if
-* [x] extract_if -- return a new list of stuff that matches a functor
+* ~[x] remove_if~ unfeasable
+* ~[x] extract_if -- return a new list of stuff that matches a functor~ unfeasable
 * [x] make list passable by value
 
 Lessons Learnt
