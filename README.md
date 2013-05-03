@@ -14,7 +14,7 @@ TODO
 * [ ] add iterator.operator-(iterator)
 * [x] add find(), rfind()
 * [x] findif(functor)
-* [/] find, rfind, findif(range)
+* [x] find, rfind, findif(range)
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
@@ -23,3 +23,27 @@ TODO
 * [ ] remove_if
 * [ ] extract_if -- return a new list of stuff that matches a functor
 * [x] make list passable by value
+
+Lessons Learnt
+==============
+
+Lesson 1
+--------
+
+struct T { ... }
+void main() {
+    UglyList::List<T> list;
+    struct functor {
+        bool operator(const T&) { return false; }
+    } f;
+    UglyList::List<T>::iterator r = list.find_if(f); // will never compile. ever.
+}
+
+struct T { ... }
+struct functor {
+    bool operator(const T&) { return false; }
+};
+void main() {
+    UglyList::List<T> list;
+    UglyList::List<T>::iterator r = list.find_if(f); // will compile successfully and it will work.
+}
