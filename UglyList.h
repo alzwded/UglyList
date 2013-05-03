@@ -153,8 +153,10 @@ public:
 
     ~List()
     {
-        clear();
-        if(--*rc) delete root;
+        if(--*rc == 0) {
+            clear();
+            delete root;
+        }
     }
 
     template<typename predicate>

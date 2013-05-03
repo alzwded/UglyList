@@ -188,7 +188,7 @@ void wasEverythingDestroyed() {
 }
 
 void print(const char* value) {
-    printf(FORMAT, value, ' ');
+    printf(". %s\n", value);
 }
 
 template<class T>
@@ -381,8 +381,14 @@ int main() {
         expectToBeDestroyed(ExpectInt(13)(14));
         print(a, Expect(13)(14));
         print(b, Expect(13)(14));
+        {
+            println("trying not to crash everything");
+            UglyList::List<Element> c = a;
+        }
+        print("should see elements destructed now");
     }
     wasEverythingDestroyed();
+    print("success", true);
 
     outro();
 
