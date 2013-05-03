@@ -18,7 +18,7 @@ TODO
 * [x] clear()
 * [ ] emplace()
 * [ ] sort(functor)
-* [ ] foreach(predicate)
+* [x] foreach(predicate)
 * [ ] foreach_if(predicate)
 * [ ] remove_if
 * [ ] extract_if -- return a new list of stuff that matches a functor

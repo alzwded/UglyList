@@ -25,7 +25,7 @@ class Element {
     friend class ElementFactory;
 public:
     int X() const { return x; }
-    std::string toString() {
+    std::string toString() const {
         std::stringstream s; 
         s << X();
         return s.str();
@@ -121,6 +121,9 @@ public:
         else failed++;
         return ret;
     }
+    bool operator!=(const std::string& other) {
+        return !(operator==(other));
+    }
     bool operator!() {
         if(nodes.empty()) successful++;
         else failed++;
@@ -129,6 +132,20 @@ public:
 };
 
 int Element::nextX = 0;
+
+struct foreach_predicate {
+    foreach_predicate(Expect expected)
+        : _expected(expected)
+        , _okay(true)
+    {}
+    void operator()(const Element& e) {
+        if(_expected != e.toString()) _okay = false;
+    }
+    bool operator~() { return _okay; }
+private:
+    Expect _expected;
+    bool _okay;
+};
 
 void intro() {
     printf("  %-16s %-16s\n", "returned value", "matches expected");
@@ -342,6 +359,11 @@ int main() {
         } else {
             print("success", true);
         }
+
+        println("for_each");
+        foreach_predicate frch(Expect(10)(11)(9)(8)(7));
+        list.for_each(frch, list.begin() + 1);
+        print("for_each", ~frch);
 
 //=DON'T=TRIM=HERE====================================START
         println("remove using destructor");

@@ -147,6 +147,23 @@ public:
         delete root;
     }
 
+    template<typename predicate>
+    void for_each(predicate f, iterator first, iterator last) {
+        for(iterator i = first; i != last; ++i) {
+            f(***i);
+        }
+    }
+
+    template<typename predicate>
+    void for_each(predicate f, iterator first) {
+        for_each(f, first, end());
+    }
+
+    template<typename predicate>
+    void for_each(predicate f) {
+        for_each(f, begin(), end());
+    }
+
     template<typename pickFunc>
     iterator find_if(pickFunc func, iterator first, iterator last) {
         for(iterator i = first; i != last; ++i) {
