@@ -169,7 +169,7 @@ void intro() {
 
 void outro() {
     printf("--%-16s-%-16s\n", "----------------", "----------------");
-    printf("%d checks of which %d were good and %d failed\n", successful + failed, successful, failed);
+    printf("%d checks of which %d were good (-v-) and %d failed (-x-)\n", successful + failed, successful, failed);
     fflush(stdout);
 }
 
@@ -509,6 +509,28 @@ int main() {
 
         expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
         a.clear();
+        wasEverythingDestroyed();
+    }
+
+    {
+        println("test validity during byval function call & return");
+        struct giytxkk {
+            static UglyList::List<Element> f(UglyList::List<Element> l) {
+                isEverythingStillAlive();
+                print(l, Expect(24)(25));
+                return l;
+            }
+        };
+        {
+            UglyList::List<Element> list;
+            list.push_back(&(new Element())->link); // 24
+            list.push_back(&(new Element())->link); // 25
+            dontDestroy(ExpectInt(24)(25));
+            giytxkk::f(list);
+            isEverythingStillAlive();
+            print(list, Expect(24)(25));
+            expectToBeDestroyed(ExpectInt(24)(25));
+        }
         wasEverythingDestroyed();
     }
 
