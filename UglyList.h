@@ -14,6 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 /*
     Ugly implementation of an intrussive list
+    This implementation is a follower of the GIGO school of thought
     author: Vlad Mesco
 */
 
