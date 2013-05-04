@@ -151,12 +151,27 @@ public:
         ++*rc;
     }
 
-    ~List()
-    {
+private:
+    void deref() {
         if(--*rc == 0) {
             clear();
             delete root;
         }
+    }
+
+public:
+    ~List()
+    {
+        deref();
+    }
+
+    List<T>& operator=(const List<T>& other) {
+        deref();
+        root = other.root;
+        rc = other.rc;
+        ++*rc;
+        cacheI = 0;
+        cache.Value = NULL;
     }
 
     template<typename pickFunc>
