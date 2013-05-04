@@ -15,6 +15,7 @@
 static int failed = 0;
 static int successful = 0;
 static std::set<int> expectedToBeDestroyed;
+static std::set<int> keepAlive;
 
 class ElementFactory;
 class Element {
@@ -80,7 +81,7 @@ public:
         return *this;
     }
     bool operator!() {
-        return nodes.empty();
+        return !nodes.empty();
     }
     int operator*() {
         int ret = nodes.front(); // don't care
@@ -171,6 +172,36 @@ void print(const char* value, bool pass) {
 void expectToBeDestroyed(ExpectInt expected) {
     expectedToBeDestroyed.clear();
     while(!expected) expectedToBeDestroyed.insert(*expected);
+}
+
+void dontDestroy(ExpectInt expected) {
+    expectedToBeDestroyed.clear();
+    keepAlive.clear();
+    while(!expected) {
+        int i = *expected;
+        expectedToBeDestroyed.insert(i);
+        keepAlive.insert(i);
+    }
+}
+
+void print(const char*);
+void isEverythingStillAlive() {
+    bool fail = false;
+    for(std::set<int>::iterator i = keepAlive.begin(); i != keepAlive.end(); ++i) {
+        if(!expectedToBeDestroyed.count(*i)) {
+            fail = true;
+            std::stringstream s;
+            s << *i << " is gone";
+            print(s.str().c_str(), false);
+        } else {
+            std::stringstream s;
+            s << *i << " still there";
+            print(s.str().c_str(), true);
+        }
+    }
+    if(!fail) {
+        print("everything that should be alive is still alive");
+    }
 }
 
 void wasEverythingDestroyed() {
@@ -377,15 +408,18 @@ int main() {
         UglyList::List<Element> a;
         a.push_back(&(new Element())->link); // 13
         a.push_back(&(new Element())->link); // 14
+        dontDestroy(ExpectInt(13)(14));
         UglyList::List<Element> b = a;
-        expectToBeDestroyed(ExpectInt(13)(14));
+        isEverythingStillAlive();
         print(a, Expect(13)(14));
         print(b, Expect(13)(14));
         {
             println("trying not to crash everything");
             UglyList::List<Element> c = a;
         }
+        isEverythingStillAlive();
         print("should see elements destructed now");
+        expectToBeDestroyed(ExpectInt(13)(14));
     }
     wasEverythingDestroyed();
     print("success", true);
