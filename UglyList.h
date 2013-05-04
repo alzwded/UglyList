@@ -116,6 +116,26 @@ public:
             }
         }
 
+        int operator-(iterator other) {
+            iterator i = *this;
+            size_t length = 0;
+            do {
+                if(i == other) return length;
+                --i;
+                ++length;
+            } while((*i)->ptr() != NULL);
+
+            length = 0;
+            iterator j = other;
+            do {
+                if(operator==(j)) return length;
+                --j;
+                --length;
+            } while((*j)->ptr() != NULL);
+            
+            return 0;
+        }
+
         bool operator!=(const iterator& other) {
             return Value != other.Value;
         }
@@ -163,6 +183,10 @@ public:
     ~List()
     {
         deref();
+    }
+
+    size_t size() {
+        return end() - begin();
     }
 
     List<T>& operator=(const List<T>& other) {

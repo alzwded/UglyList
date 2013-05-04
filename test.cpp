@@ -449,6 +449,21 @@ int main() {
         print(b, Expect(15));
     }
 
+    {
+        println("iterator difference");
+        UglyList::List<Element> a;
+        a.push_back(&(new Element())->link); // 18
+        a.push_back(&(new Element())->link); // 19
+        a.push_back(&(new Element())->link); // 20
+        UglyList::List<Element>::iterator i = a.begin() + 1;
+        UglyList::List<Element>::iterator j = a.begin() + 2;
+        print("difference is okay", (j - i) == 1);
+        print("rdifference is okay", (i - j) == -1);
+
+        println("size");
+        print("size is okay", a.size() == 3);
+    }
+
     outro();
 
     return 0;
