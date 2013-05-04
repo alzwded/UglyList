@@ -339,7 +339,7 @@ int main() {
         otherList.push_back(&(new Element())->link);
         otherList.push_back(&(new Element())->link);
         otherList.push_back(&(new Element())->link);
-        list.splice(list.begin(), otherList, otherList.begin(), otherList.end() - 1);
+        list.splice(list.begin() + 1, otherList, otherList.begin(), otherList.end() - 1);
         print(list, Expect(5)(10)(11)(9)(8)(7));
         print(otherList, Expect(12));
 
@@ -472,6 +472,20 @@ int main() {
 
         println("size");
         print("size is okay", a.size() == 3);
+
+        println("merge");
+        UglyList::List<Element> b;
+        b.push_back(&(new Element())->link); // 21
+        b.push_back(&(new Element())->link); // 22
+        b.push_back(&(new Element())->link); // 23
+        dontDestroy(ExpectInt(18)(19)(20)(21)(22)(23));
+        a.merge(b);
+        isEverythingStillAlive();
+        print(a, Expect(18)(19)(20)(21)(22)(23));
+        print(b, Expect());
+        expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
+        a.clear();
+        wasEverythingDestroyed();
     }
 
     outro();

@@ -355,12 +355,16 @@ public:
         return find(what, func, begin(), end());
     }
 
+    void merge(List<T>& other) {
+        splice(end(), other, other.begin(), other.end());
+    }
+
     void splice(iterator pos, List<T>& other, iterator first, iterator last) {
         for(iterator p = first; p != last;) {
             iterator prev = p;
             ++p;
-            insert(other.extract(prev), *pos, *(pos + 1));
-            ++pos;
+            insert(other.extract(prev), *(pos - 1), *pos);
+            //++pos;
         }
     }
 

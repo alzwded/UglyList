@@ -10,6 +10,7 @@ TODO
 * [ ] import the test framework from older project that takes abort calls and sigsegvs into account because that was cool and I want it here
 * [x] extract to remove an element from the list without baleeting it
 * [x] splice(iterator, otherList, iterator, iterator) method to transfer an element to another list
+* [x] merge(list)
 * [x] swap(iterator, iterator)
 * [x] add iterator.operator-(iterator)
 * [x] size()
