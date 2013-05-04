@@ -6,8 +6,8 @@ ugly implementation of intrusive lists
 TODO
 ====
 
-* [ ] unit tests
-* [ ] import the test framework from older project that takes abort calls and sigsegvs into account because that was cool and I want it here
+* ~~[ ] unit tests~~ I don't wanna rewrite test.cpp
+* ~~[ ] import the test framework from older project that takes abort calls and sigsegvs into account because that was cool and I want it here~~
 * [x] extract to remove an element from the list without baleeting it
 * [x] splice(iterator, otherList, iterator, iterator) method to transfer an element to another list
 * [x] merge(list)
@@ -18,7 +18,7 @@ TODO
 * [x] findif(functor)
 * [x] find, rfind, findif(range)
 * [x] clear()
-* [ ] emplace()
+* ~~[ ] emplace()~~ wait until c++11 becomes a hosehold name
 * [ ] sort(functor)
 * [x] foreach(predicate)
 * ~~[ ] foreach_if(predicate)~~ overruled
