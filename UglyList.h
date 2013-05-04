@@ -443,16 +443,11 @@ public:
     void swap(iterator first, iterator second) {
         ListNode<T>* a = *first;
         ListNode<T>* b = *second;
-        ListNode<T>* tempNext = a->next;
-        ListNode<T>* tempPrev = a->prev;
-        a->next = b->next;
-        a->prev = b->prev;
-        tempNext->prev = b;
-        tempPrev->next = b;
-        b->next->prev = a;
-        b->prev->next = a;
-        b->next = tempNext;
-        b->prev = tempPrev;
+        ListNode<T>* bNext = b->next;
+        ListNode<T>* extracted = extract(second);
+        insert(extracted, a, a->next);
+        extracted = extract(first);
+        insert(extracted, bNext->prev, bNext);
     }
 
     ListNode<T>* extract(iterator i) {

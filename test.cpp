@@ -496,6 +496,17 @@ int main() {
         isEverythingStillAlive();
         print(a, Expect(18)(19)(20)(21)(22)(23));
         print(b, Expect());
+
+        println("swap(2)");
+        a.swap(a.begin(), a.end() - 1);
+        a.swap(a.begin(), a.begin() + 3);
+        print(a, Expect(21)(19)(20)(23)(22)(18));
+        rprint(a, Expect(18)(22)(23)(20)(19)(21));
+        println("swap(3)");
+        a.swap(a.begin() + 1, a.begin() + 2);
+        print(a, Expect(21)(20)(19)(23)(22)(18));
+        rprint(a, Expect(18)(22)(23)(19)(20)(21));
+
         expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
         a.clear();
         wasEverythingDestroyed();
