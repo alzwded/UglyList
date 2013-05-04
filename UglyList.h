@@ -442,6 +442,7 @@ public:
     }
 
     void swap(iterator first, iterator second) {
+        if(first == second) return;
         ListNode<T>* a = *first;
         ListNode<T>* b = *second;
         ListNode<T>* bNext = b->next;

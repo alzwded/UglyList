@@ -511,6 +511,12 @@ int main() {
         print(a, Expect(21)(20)(19)(23)(22)(18));
         rprint(a, Expect(18)(22)(23)(19)(20)(21));
 
+        println("swap(same)");
+        a.swap(a.begin(), a.begin());
+        print(a, Expect(21)(20)(19)(23)(22)(18));
+        rprint(a, Expect(18)(22)(23)(19)(20)(21));
+
+
         expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
         a.clear();
         wasEverythingDestroyed();
