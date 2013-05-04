@@ -151,22 +151,26 @@ private:
 void intro() {
     printf("  %-16s %-16s\n", "returned value", "matches expected");
     printf("--%-16s-%-16s\n", "----------------", "----------------");
+    fflush(stdout);
 }
 
 void outro() {
     printf("--%-16s-%-16s\n", "----------------", "----------------");
     printf("%d checks of which %d were good and %d failed\n", successful + failed, successful, failed);
+    fflush(stdout);
 }
 
 template<class T>
 void print(T& value, Expect expected) {
     printf(FORMAT, value.toString().c_str(), (expected == value.toString()) ? 'v' : 'x');
+    fflush(stdout);
 }
 
 void print(const char* value, bool pass) {
     printf(FORMAT, value, (pass) ? 'v' : 'x');
     if(pass) successful++;
     else failed++;
+    fflush(stdout);
 }
 
 void expectToBeDestroyed(ExpectInt expected) {
@@ -202,6 +206,7 @@ void isEverythingStillAlive() {
     if(!fail) {
         print("everything that should be alive is still alive");
     }
+    fflush(stdout);
 }
 
 void wasEverythingDestroyed() {
@@ -216,10 +221,12 @@ void wasEverythingDestroyed() {
         }
         printf(" was/were not destroyed.\n");
     }
+    fflush(stdout);
 }
 
 void print(const char* value) {
     printf(". %s\n", value);
+    fflush(stdout);
 }
 
 template<class T>
@@ -229,6 +236,7 @@ void print(UglyList::List<T>& list, Expect expected) {
         printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
     printf(FORMAT, "<end of list>", (!expected ? 'v' : 'x'));
+    fflush(stdout);
 }
 
 template<class T>
@@ -238,10 +246,12 @@ void rprint(UglyList::List<T>& list, Expect expected) {
         printf(FORMAT, (**i)->toString().c_str(), (expected == (**i)->toString()) ? 'v' : 'x');
     }
     printf(FORMAT, "<end of list>", (!expected ? 'v' : 'x'));
+    fflush(stdout);
 }
 
 void println(const char* s) {
     printf("%s\n", s);
+    fflush(stdout);
 }
 
 int main() {
