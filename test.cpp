@@ -18,6 +18,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #define FORMAT ". %-16s -%c-\n"
 
+#ifndef FAIL_CODE
+# define FAIL_CODE 1
+#endif
+
 /*
     Ugly implementation of an intrussive list
     This is the test/documentation executable source file that comes with
@@ -536,5 +540,6 @@ int main() {
 
     outro();
 
-    return 0;
+    if(failed) return FAIL_CODE;
+    else return 0;
 }

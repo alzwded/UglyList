@@ -14,7 +14,9 @@ test.log: a.out
 
 test: test.log a.out
 
-vtest: test
+vtest:
+	$(CC) $(CFLAGS) -DFAIL_CODE=0 test.cpp
+	./a.out > test.log
 	less test.log
 
 .PHONY: test
