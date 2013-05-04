@@ -375,7 +375,6 @@ public:
             iterator prev = p;
             ++p;
             insert(other.extract(prev), *(pos - 1), *pos);
-            //++pos;
         }
     }
 
