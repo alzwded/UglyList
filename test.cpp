@@ -78,6 +78,12 @@ public:
     }
 };
 
+struct reverse_compare {
+    bool operator()(const Element& a, const Element& b) {
+        return b.X() < a.X();
+    }
+};
+
 struct pick_functor {
     void setX(const int x) { _x = x; }
     pick_functor(const int x) : _x(x) {}
@@ -524,6 +530,11 @@ int main() {
         a.sort();
         print(a, Expect(18)(19)(20)(21)(22)(23));
         rprint(a, Expect(23)(22)(21)(20)(19)(18));
+
+        println("sort with functor");
+        reverse_compare fctor;
+        a.sort(fctor);
+        print(a, Expect(23)(22)(21)(20)(19)(18));
 
         expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
         a.clear();
