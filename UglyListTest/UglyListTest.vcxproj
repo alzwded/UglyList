@@ -76,6 +76,10 @@ cmd /c more /E &lt; $(OutDir)test.log</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath) &gt; $(OutDir)test.log
+cmd /c more /E &lt; $(OutDir)test.log</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\UglyList.h" />
