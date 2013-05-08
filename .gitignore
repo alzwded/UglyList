@@ -16,6 +16,8 @@
 # runtime files
 *.log
 gdb.txt
+
+# visual studio stuff
 Debug
 ipch
 /UglyListTest/*.opensdf
