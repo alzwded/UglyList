@@ -48,7 +48,7 @@ public:
 };
 
 template<class T>
-struct List {
+class List {
 public:
     struct iterator {
         iterator(ListNode<T>* v, bool reverse = false)
