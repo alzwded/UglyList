@@ -42,6 +42,9 @@ class Element {
     Element(const int preferred) : link(this), x(preferred), talkative(false) {}
     friend class ElementFactory;
 public:
+    bool operator<(const Element& other) const {
+        return X() < other.X();
+    }
     int X() const { return x; }
     std::string toString() const {
         std::stringstream s; 
@@ -298,6 +301,7 @@ int main() {
         println("print elements using index operator");
         print(**list[1], Expect(3));
         print(**list[2], Expect(4));
+        print(**list[0], Expect(2));
 
         println("remove element using remove");
         list.remove(list[1]);
@@ -516,6 +520,10 @@ int main() {
         print(a, Expect(21)(20)(19)(23)(22)(18));
         rprint(a, Expect(18)(22)(23)(19)(20)(21));
 
+        println("sort");
+        a.sort();
+        print(a, Expect(18)(19)(20)(21)(22)(23));
+        rprint(a, Expect(23)(22)(21)(20)(19)(18));
 
         expectToBeDestroyed(ExpectInt(18)(19)(20)(21)(22)(23));
         a.clear();

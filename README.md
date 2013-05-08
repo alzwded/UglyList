@@ -19,7 +19,7 @@ TODO
 * [x] find, rfind, findif(range)
 * [x] clear()
 * ~~[ ] emplace()~~ wait until c++11 becomes a hosehold name
-* [ ] sort(functor)
+* [x] sort(functor)
 * [x] foreach(predicate)
 * ~~[ ] foreach_if(predicate)~~ overruled
 * [x] remove_if (new idea!)

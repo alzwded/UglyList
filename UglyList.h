@@ -372,6 +372,7 @@ public:
     }
 
     void splice(iterator pos, List<T>& other, iterator first, iterator last) {
+        clearCache();
         for(iterator p = first; p != last;) {
             iterator prev = p;
             ++p;
@@ -388,12 +389,14 @@ public:
     }
 
     void clear() {
+        clearCache();
         while(!empty()) {
             remove(root->next);
         }
     }
 
     void insert(ListNode<T>* node, ListNode<T>* prev, ListNode<T>* next) {
+        clearCache();
         node->next = next;
         node->prev = prev;
         next->prev = node;
@@ -443,6 +446,7 @@ public:
 
     void swap(iterator first, iterator second) {
         if(first == second) return;
+        clearCache();
         ListNode<T>* a = *first;
         ListNode<T>* b = *second;
         ListNode<T>* bNext = b->next;
@@ -452,7 +456,44 @@ public:
         insert(extracted, bNext->prev, bNext);
     }
 
+private:
+    static bool default_sort(const T& a, const T& b) {
+        return a < b;
+    }
+
+public:
+    void sort() {
+        sort(&UglyList::List<T>::default_sort);
+    }
+
+    template<typename sortFunc>
+    void sort(sortFunc f) {
+        // comb sort
+        size_t mysize = size();
+        int gap = mysize;
+        float shrink = 1.3f;
+        bool swapped = true;
+
+        while(gap > 1 || swapped) {
+            gap = gap / shrink;
+            if(gap < 1) gap = 1;
+
+            swapped = false;
+            for(int i = 0; i + gap < mysize; ++i) {
+                const T& firstval = **operator[](i);
+                iterator first = cache;
+                const T& secondval = **operator[](i + gap);
+                iterator second = cache;
+                if(f(secondval, firstval)) {
+                    swap(first, second);
+                    swapped = true;
+                }
+            }
+        }
+    }
+
     ListNode<T>* extract(iterator i) {
+        clearCache();
         ListNode<T>* ret = *i;
         ret->next->prev = ret->prev;
         ret->prev->next = ret->next;
@@ -462,6 +503,7 @@ public:
     }
 
     void remove(ListNode<T>* node) {
+        clearCache();
         node->remove();
     }
 
@@ -483,6 +525,10 @@ public:
 
     void erase(iterator i) {
         remove((*i));
+    }
+
+    void clearCache() {
+        cache = NULL;
     }
 
 private:
