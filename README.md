@@ -53,3 +53,8 @@ void main() {
     UglyList::List<T>::iterator r = list.find_if(f); // will compile successfully and it will work.
 }
 ```
+
+Lesson 2
+--------
+
+Cache management is hard and tricky and should be left for after everything else is implemented.
