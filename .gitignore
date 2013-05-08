@@ -16,3 +16,10 @@
 # runtime files
 *.log
 gdb.txt
+Debug
+ipch
+/UglyListTest/*.opensdf
+/UglyListTest/*.sdf
+/UglyListTest/*.suo
+/UglyListTest/*.filters
+/UglyListTest/*.user
