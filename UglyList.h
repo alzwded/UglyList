@@ -169,6 +169,7 @@ public:
         , cache(NULL)
         , cacheI(0)
         , rc(new int(1))
+		, sizeCache(0)
     {
         root->next = root;
         root->prev = root;
@@ -179,6 +180,7 @@ public:
         , cache(NULL)
         , cacheI(0)
         , rc(other.rc)
+		, sizeCache(0)
     {
         ++*rc;
     }
@@ -198,7 +200,8 @@ public:
     }
 
     size_t size() {
-        return end() - begin();
+		if(sizeCache == 0) sizeCache = end() - begin();
+        return sizeCache;
     }
 
     List<T>& operator=(const List<T>& other) {
@@ -208,6 +211,7 @@ public:
         ++*rc;
         cacheI = 0;
         cache.Value = NULL;
+		sizeCache = 0;
     }
 
     template<typename pickFunc>
@@ -428,10 +432,18 @@ public:
     }
 
     ListNode<T>* operator[](int i) {
-        if(cache == end()) {
-            cache = NULL;
-        }
-        if(cache == NULL) {
+		// clear the cache since it introduces problems
+		clearCache();
+		struct _i_ {
+			static bool _i_abs(int i) {
+				if(i >= 0) return i;
+				else return -i;
+			}
+		};
+        //if(cache == end()) {
+        //    cache = NULL;
+        //}
+        if(cache == NULL || (_i_::_i_abs(i) < _i_::_i_abs(cacheI - i))) {
             cache = begin();
             cacheI = 0;
         }
@@ -529,6 +541,8 @@ public:
 
     void clearCache() {
         cache = NULL;
+		cacheI = 0;
+		sizeCache = 0;
     }
 
 private:
@@ -536,6 +550,7 @@ private:
     iterator cache;
     int cacheI;
     int* rc;
+	size_t sizeCache;
 };
 
 } // template UglyList

@@ -563,6 +563,32 @@ int main() {
         wasEverythingDestroyed();
     }
 
+	{
+		println("test cache of []");
+		UglyList::List<Element> list;
+		list.push_back(&(new Element())->link); // 26
+		list.push_back(&(new Element())->link); // 27
+		list.push_back(&(new Element())->link); // 28
+		list.push_back(&(new Element())->link); // 29
+		list.push_back(&(new Element())->link); // 30
+		print(**list[0], Expect(26));
+		print(**list[4], Expect(30));
+		print(**list[1], Expect(27));
+		print(**list[2], Expect(28));
+		print(**list[3], Expect(29));
+		print(**list[0], Expect(26));
+		print(**list[4], Expect(30));
+		print(**list[3], Expect(29));
+		print(**list[2], Expect(28));
+		print(**list[4], Expect(30));
+		println("test cache validation after insert");
+		list.push_back(&(new Element())->link); // 31
+		print(**list[5], Expect(31));
+		println("test after erase");
+		list[5]->remove();
+		print(**list[4], Expect(30));
+	}
+
     outro();
 
     if(failed) return FAIL_CODE;
