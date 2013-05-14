@@ -166,10 +166,7 @@ public:
 
     List()
         : root(new ListNode<T>(NULL))
-        , cache(NULL)
-        , cacheI(0)
         , rc(new int(1))
-		, sizeCache(0)
     {
         root->next = root;
         root->prev = root;
@@ -177,10 +174,7 @@ public:
 
     List(const List<T>& other)
         : root(other.root)
-        , cache(NULL)
-        , cacheI(0)
         , rc(other.rc)
-		, sizeCache(0)
     {
         ++*rc;
     }
@@ -200,8 +194,7 @@ public:
     }
 
     size_t size() {
-		if(sizeCache == 0) sizeCache = end() - begin();
-        return sizeCache;
+        return end() - begin();
     }
 
     List<T>& operator=(const List<T>& other) {
@@ -209,9 +202,6 @@ public:
         root = other.root;
         rc = other.rc;
         ++*rc;
-        cacheI = 0;
-        cache.Value = NULL;
-		sizeCache = 0;
     }
 
     template<typename pickFunc>
@@ -376,7 +366,6 @@ public:
     }
 
     void splice(iterator pos, List<T>& other, iterator first, iterator last) {
-        clearCache();
         for(iterator p = first; p != last;) {
             iterator prev = p;
             ++p;
@@ -393,14 +382,12 @@ public:
     }
 
     void clear() {
-        clearCache();
         while(!empty()) {
             remove(root->next);
         }
     }
 
     void insert(ListNode<T>* node, ListNode<T>* prev, ListNode<T>* next) {
-        clearCache();
         node->next = next;
         node->prev = prev;
         next->prev = node;
@@ -432,24 +419,7 @@ public:
     }
 
     ListNode<T>* operator[](int i) {
-		// clear the cache since it introduces problems
-		clearCache();
-		struct _i_ {
-			static bool _i_abs(int i) {
-				if(i >= 0) return i;
-				else return -i;
-			}
-		};
-        //if(cache == end()) {
-        //    cache = NULL;
-        //}
-        if(cache == NULL || (_i_::_i_abs(i) < _i_::_i_abs(cacheI - i))) {
-            cache = begin();
-            cacheI = 0;
-        }
-        cache = cache + (i - cacheI);
-        cacheI = i;
-        return *cache;
+        return *(begin() + i);
     }
 
     bool empty() {
@@ -458,7 +428,6 @@ public:
 
     void swap(iterator first, iterator second) {
         if(first == second) return;
-        clearCache();
         ListNode<T>* a = *first;
         ListNode<T>* b = *second;
         ListNode<T>* bNext = b->next;
@@ -492,10 +461,10 @@ public:
 
             swapped = false;
             for(int i = 0; i + gap < mysize; ++i) {
-                const T& firstval = **operator[](i);
-                iterator first = cache;
-                const T& secondval = **operator[](i + gap);
-                iterator second = cache;
+				iterator first = begin() + i;
+                const T& firstval = ***first;
+                iterator second = first + gap;
+                const T& secondval = ***second;
                 if(f(secondval, firstval)) {
                     swap(first, second);
                     swapped = true;
@@ -505,7 +474,6 @@ public:
     }
 
     ListNode<T>* extract(iterator i) {
-        clearCache();
         ListNode<T>* ret = *i;
         ret->next->prev = ret->prev;
         ret->prev->next = ret->next;
@@ -515,7 +483,6 @@ public:
     }
 
     void remove(ListNode<T>* node) {
-        clearCache();
         node->remove();
     }
 
@@ -539,18 +506,9 @@ public:
         remove((*i));
     }
 
-    void clearCache() {
-        cache = NULL;
-		cacheI = 0;
-		sizeCache = 0;
-    }
-
 private:
     ListNode<T>* root;
-    iterator cache;
-    int cacheI;
     int* rc;
-	size_t sizeCache;
 };
 
 } // template UglyList
